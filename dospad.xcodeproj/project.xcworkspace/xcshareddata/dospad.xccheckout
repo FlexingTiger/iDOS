@@ -10,42 +10,31 @@
 	<string>dospad</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>3198FDFF-1096-4D96-BA70-C3E5765EA31E</key>
-		<string>http://dospad.googlecode.com/svn/trunk</string>
+		<key>0317EAF97CA7C4B7C06CE1F071C6397316AFFFFC</key>
+		<string>github.com:kimar/iDOS.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>dospad.xcodeproj/project.xcworkspace</string>
+	<string>dospad.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>3198FDFF-1096-4D96-BA70-C3E5765EA31E</key>
+		<key>0317EAF97CA7C4B7C06CE1F071C6397316AFFFFC</key>
 		<string>../..</string>
 	</dict>
-	<key>IDESourceControlProjectRepositoryRootDictionary</key>
-	<dict>
-		<key>3198FDFF-1096-4D96-BA70-C3E5765EA31E</key>
-		<string>http://dospad.googlecode.com/svn</string>
-	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>http://dospad.googlecode.com/svn/trunk/dospad.xcodeproj</string>
+	<string>github.com:kimar/iDOS.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>3198FDFF-1096-4D96-BA70-C3E5765EA31E</string>
+	<string>0317EAF97CA7C4B7C06CE1F071C6397316AFFFFC</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
-			<key>IDESourceControlRepositoryBranchesRelativeLocationKey</key>
-			<string>branches</string>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
-			<string>public.vcs.subversion</string>
-			<key>IDESourceControlRepositoryTagsRelativeLocationKey</key>
-			<string>tags</string>
-			<key>IDESourceControlRepositoryTrunkRelativeLocationKey</key>
-			<string>trunk</string>
+			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>3198FDFF-1096-4D96-BA70-C3E5765EA31E</string>
+			<string>0317EAF97CA7C4B7C06CE1F071C6397316AFFFFC</string>
 			<key>IDESourceControlWCCName</key>
-			<string>dospad-read-only</string>
+			<string>iDOS</string>
 		</dict>
 	</array>
 </dict>

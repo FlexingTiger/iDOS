@@ -82,7 +82,7 @@ NSString *get_dospad_config()
 {
     NSString *cfg;
     FileSystemObject *fso = [[FileSystemObject alloc] autorelease];
-    NSString *cfgDir = [NSString stringWithUTF8String:diskc];
+    NSString *cfgDir = [NSString stringWithUTF8String:diskd];
     NSString *filename= @"dospad.cfg";
     cfg = [cfgDir stringByAppendingPathComponent:filename];
     NSString *cfg_uc = [cfgDir stringByAppendingPathComponent:[filename uppercaseString]];

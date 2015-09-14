@@ -625,9 +625,9 @@ static struct {
         }
         else
         {
-            maxWidth = 480;
+            maxWidth = 568;
             maxHeight= 320;
-            ptCenter = CGPointMake(240, 160);
+            ptCenter = CGPointMake(maxWidth / 2, 160);
         }
     }
 
