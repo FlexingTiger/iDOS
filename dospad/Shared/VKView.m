@@ -249,7 +249,7 @@ extern int SDL_SendKeyboardKey(int index, Uint8 state, SDL_scancode scancode);
 //==============================================================================
 #pragma mark UITextInput implementation
 
-@synthesize inputDelegate;
+//@synthesize inputDelegate;
 @synthesize selectionAffinity;
 
 //------------------------------------------------------------------------------
