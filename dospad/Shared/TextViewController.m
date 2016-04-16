@@ -165,11 +165,6 @@
 }
 
 
-- (void)dealloc {
-    self.filePath=nil;
-    self.textView=nil;
-    [super dealloc];
-}
 
 
 - (void)textViewDidChange:(UITextView *)textView

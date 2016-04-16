@@ -34,16 +34,16 @@
     UIColor *edgeColor;
     NSString *title;
     BOOL highlight;
-    id<KeyDelegate> delegate;
+    id<KeyDelegate> __weak delegate;
     UIEdgeInsets padding;
 }
 
 @property UIEdgeInsets padding;
 @property BOOL highlight;
-@property (nonatomic,retain)NSString *title;
+@property (nonatomic,strong)NSString *title;
 @property int code;
-@property (nonatomic, retain) UIColor *textColor;
-@property (nonatomic, retain) UIColor *bkgColor,*edgeColor;
-@property (nonatomic,assign) id<KeyDelegate> delegate;
+@property (nonatomic, strong) UIColor *textColor;
+@property (nonatomic, strong) UIColor *bkgColor,*edgeColor;
+@property (nonatomic,weak) id<KeyDelegate> delegate;
 
 @end

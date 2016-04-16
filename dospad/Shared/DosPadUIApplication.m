@@ -55,32 +55,32 @@ extern int SDL_SendKeyboardKey(int index, Uint8 state, SDL_scancode scancode);
 - (void)sendEvent:(UIEvent *)event
 {
 	[super sendEvent:event];
-	
-	if ([event respondsToSelector:@selector(_gsEvent)]) {
-		int *eventMem;
-		eventMem = (int *)[event performSelector:@selector(_gsEvent)];
-		if (eventMem) {
-			int eventType = eventMem[GSEVENT_TYPE];
-			int eventFlags = eventMem[GSEVENT_FLAGS];
-			//NSLog(@"event flags: %i type %d", eventFlags, eventType);
-			
-			if (lastEventFlags ^ eventFlags) {
-				[self onFlagsChange:eventFlags];
-				lastEventFlags = eventFlags;
-			}
-			
-			if (eventType == GSEVENT_TYPE_KEYUP) {
-				int scancode = eventMem[GSEVENTKEY_KEYCODE];
-				SDL_SendKeyboardKey(0, SDL_RELEASED, scancode);
-			}
-			
-			if(eventType == GSEVENT_TYPE_KEYDOWN)
-			{
-				int scancode = eventMem[GSEVENTKEY_KEYCODE];
-				SDL_SendKeyboardKey(0, SDL_PRESSED, scancode);
-			}
-		}
-	}
+//  YS commenting out for ARC - this probably doesn't work in iOS 9 anyway...
+//	if ([event respondsToSelector:@selector(_gsEvent)]) {
+//		int *eventMem;
+//		eventMem = (int *)[event performSelector:@selector(_gsEvent)];
+//		if (eventMem) {
+//			int eventType = eventMem[GSEVENT_TYPE];
+//			int eventFlags = eventMem[GSEVENT_FLAGS];
+//			//NSLog(@"event flags: %i type %d", eventFlags, eventType);
+//			
+//			if (lastEventFlags ^ eventFlags) {
+//				[self onFlagsChange:eventFlags];
+//				lastEventFlags = eventFlags;
+//			}
+//			
+//			if (eventType == GSEVENT_TYPE_KEYUP) {
+//				int scancode = eventMem[GSEVENTKEY_KEYCODE];
+//				SDL_SendKeyboardKey(0, SDL_RELEASED, scancode);
+//			}
+//			
+//			if(eventType == GSEVENT_TYPE_KEYDOWN)
+//			{
+//				int scancode = eventMem[GSEVENTKEY_KEYCODE];
+//				SDL_SendKeyboardKey(0, SDL_PRESSED, scancode);
+//			}
+//		}
+//	}
 }
 
 @end

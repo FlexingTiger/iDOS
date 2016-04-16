@@ -280,7 +280,7 @@
 
 - (id)initWithGIFFile:(NSString*)path
 {
-    filePath = [path retain];
+    filePath = path;
     GIF_buffer = [[NSMutableData alloc] init];
     GIF_screen = [[NSMutableData alloc] init];
     GIF_delays = [[NSMutableArray alloc] init];
@@ -374,15 +374,4 @@
                                                object:nil];
 }
 
-- (void)dealloc 
-{        
-    [filePath release];
-    [GIF_buffer release];
-    [GIF_screen release];
-    [GIF_global release];
-    [GIF_string release];
-    [GIF_delays release];
-    [GIF_framesData release];
-    [super dealloc];
-}
 @end

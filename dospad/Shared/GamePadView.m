@@ -180,15 +180,11 @@ static SystemSoundID sound_joystick_move=0;
 }
 
 - (void)dealloc {
-    [centerStickImage release];
-    [sidedStickImage release];
-    [backgroundImage release];
     
     if (joystick)
     {
         SDL_JoystickClose(joystick);
     }
-    [super dealloc];
 }
 
 - (float)distantFrom:(CGPoint)pt1 to:(CGPoint)pt2
@@ -285,7 +281,7 @@ static SystemSoundID sound_joystick_move=0;
     if (quiet) return;
     if (sound_joystick_move == 0) {
         NSString *path = [[NSBundle mainBundle] pathForResource:@"joystickmove" ofType:@"wav"];
-        AudioServicesCreateSystemSoundID((CFURLRef)[NSURL fileURLWithPath:path],&sound_joystick_move);
+        AudioServicesCreateSystemSoundID((__bridge CFURLRef)[NSURL fileURLWithPath:path],&sound_joystick_move);
     }
     if (sound_joystick_move != 0) AudioServicesPlaySystemSound(sound_joystick_move);
 }
@@ -427,9 +423,7 @@ static SystemSoundID sound_joystick_move=0;
 
 - (void)setTitle:(NSString *)s
 {
-    if (title) [title release];
     title = s;
-    [title retain];
     [self setNeedsDisplay];
 }
 
@@ -486,7 +480,7 @@ static SystemSoundID sound_joystick_move=0;
     {
         if (sound_joystick_button_click == 0) {
             NSString *path = [[NSBundle mainBundle] pathForResource:@"joystickbtn" ofType:@"wav"];
-            AudioServicesCreateSystemSoundID((CFURLRef)[NSURL fileURLWithPath:path],&sound_joystick_button_click);
+            AudioServicesCreateSystemSoundID((__bridge CFURLRef)[NSURL fileURLWithPath:path],&sound_joystick_button_click);
         }
         if (sound_joystick_button_click != 0) AudioServicesPlaySystemSound(sound_joystick_button_click);
     }
@@ -657,10 +651,6 @@ static SystemSoundID sound_joystick_move=0;
     {
         SDL_JoystickClose(joystick);
     }
-    [images release];
-    [title release];
-    [textColor release];
-    [super dealloc];
 }
 
 
@@ -968,10 +958,7 @@ static SystemSoundID sound_joystick_move=0;
 {
     for (int i = 0; i < MAX_GAMEPAD_BUTTON; i++)
     {
-        [btn[i] release];
     }
-    [dpad release];
-    [super dealloc];
 }
 
 

@@ -69,7 +69,7 @@ static struct {
     //---------------------------------------------------
     // 1. Create View
     //---------------------------------------------------
-    UIImageView *baseView = [[[UIImageView alloc] initWithFrame:CGRectMake(0,0,320,480)] autorelease];
+    UIImageView *baseView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,320,480)];
     baseView.contentMode = UIViewContentModeCenter;
     self.view = baseView;
     self.view.backgroundColor = [UIColor blackColor];
@@ -81,16 +81,16 @@ static struct {
 
     toolPanel = [[ToolPanelView alloc] initWithFrame:CGRectMake(0,240,320,25)];
 
-    UIButton *btnOption = [[[UIButton alloc] initWithFrame:CGRectMake(0,0,32,25)] autorelease];
-    UIButton *btnLeft = [[[UIButton alloc] initWithFrame:CGRectMake(33,0,67,25)] autorelease];
-    UIButton *btnRight = [[[UIButton alloc] initWithFrame:CGRectMake(100,0,67,25)] autorelease];
+    UIButton *btnOption = [[UIButton alloc] initWithFrame:CGRectMake(0,0,32,25)];
+    UIButton *btnLeft = [[UIButton alloc] initWithFrame:CGRectMake(33,0,67,25)];
+    UIButton *btnRight = [[UIButton alloc] initWithFrame:CGRectMake(100,0,67,25)];
     [btnLeft setImage:[UIImage imageNamed:@"leftmouse.png"] forState:UIControlStateHighlighted];
     [btnRight setImage:[UIImage imageNamed:@"rightmouse.png"] forState:UIControlStateHighlighted];
     
     // Create the button larger than the image, so we have a bigger clickable area,
     // while visually takes smaller place
-    UIButton *btnDPadSwitch = [[[UIButton alloc] initWithFrame:CGRectMake(170,0,76,25)] autorelease];
-    UIImageView *imgTmp = [[[UIImageView alloc] initWithFrame:CGRectMake(2, 2, 72, 16)] autorelease];
+    UIButton *btnDPadSwitch = [[UIButton alloc] initWithFrame:CGRectMake(170,0,76,25)];
+    UIImageView *imgTmp = [[UIImageView alloc] initWithFrame:CGRectMake(2, 2, 72, 16)];
     imgTmp.image = [UIImage imageNamed:@"switch.png"];
     [btnDPadSwitch addSubview:imgTmp];
     slider = [[UIImageView alloc] initWithFrame:CGRectMake(21,7,17,8)];
@@ -157,7 +157,7 @@ static struct {
 #ifdef IDOS
     if (!autoExit)
     {
-        UIButton *btnTop = [[[UIButton alloc] initWithFrame:CGRectMake(0,0,320,30)] autorelease];
+        UIButton *btnTop = [[UIButton alloc] initWithFrame:CGRectMake(0,0,320,30)];
         btnTop.backgroundColor=[UIColor clearColor];
         btnTop.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         [btnTop addTarget:self action:@selector(showNavigationBar) forControlEvents:UIControlEventTouchUpInside];
@@ -174,7 +174,6 @@ static struct {
     [btnExitFS setImage:[UIImage imageNamed:@"exitfull.png"] forState:UIControlStateNormal];
     [btnExitFS addTarget:self action:@selector(toggleScreenSize) forControlEvents:UIControlEventTouchUpInside];
     [fullscreenPanel.contentView addSubview:btnExitFS];
-    [btnExitFS release];
 }
 
 - (void)toggleInputSource:(id)sender
@@ -193,7 +192,7 @@ static struct {
 {
     NSMutableArray *items = [NSMutableArray arrayWithCapacity:16];
     
-    UIImageView *cpuWindow = [[[UIImageView alloc] initWithFrame:CGRectMake(0,0,48,24)] autorelease];
+    UIImageView *cpuWindow = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,48,24)];
     cpuWindow.image = [UIImage imageNamed:@"cpuwindow.png"];
     
     if (labCycles2 == nil)
@@ -217,7 +216,7 @@ static struct {
     for (int i = 0; i < NUM_BUTTON_INFO; i++) {
         if (DEFS_GET_INT(InputSource_KeyName(toggleButtonInfo[i].type)))
         {
-            UIButton *btn = [[[UIButton alloc] initWithFrame:CGRectMake(0,0,48,24)] autorelease];
+            UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(0,0,48,24)];
             NSString *on = [NSString stringWithUTF8String:toggleButtonInfo[i].onImageName];
             NSString *off = [NSString stringWithUTF8String:toggleButtonInfo[i].offImageName];
             BOOL active = [self isInputSourceActive:toggleButtonInfo[i].type];
@@ -229,7 +228,7 @@ static struct {
         }
     }
         
-    UIButton *btnOption = [[[UIButton alloc] initWithFrame:CGRectMake(380,0,48,24)] autorelease];
+    UIButton *btnOption = [[UIButton alloc] initWithFrame:CGRectMake(380,0,48,24)];
     [btnOption setImage:[UIImage imageNamed:@"options.png"] forState:UIControlStateNormal];
     [btnOption addTarget:self action:@selector(showOption) forControlEvents:UIControlEventTouchUpInside];
     [items addObject:btnOption];
@@ -478,7 +477,6 @@ static struct {
 -(void)didFloatingView:(FloatingView*)fltView
 {
     [self removeiOSKeyboard];
-    [overlay release];
     overlay = nil;
 }
 
@@ -587,19 +585,6 @@ static struct {
     // e.g. self.myOutlet = nil;
 }
 
-- (void)dealloc {
-    [overlay release];
-    [banner release];
-    [labCycles release];
-    [labCycles2 release];
-    [fsIndicator release];
-    [fsIndicator2 release];
-    [toolPanel release];
-    [btnShowKeyboard release];
-    [slider release];
-    [fullscreenPanel release];
-    [super dealloc];
-}
 
 -(void)onResize:(CGSize)sizeNew
 {

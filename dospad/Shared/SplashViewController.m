@@ -26,7 +26,7 @@
 
 - (void)loadView
 {
-    self.view = [[[UIView alloc] initWithFrame:CGRectMake(0,0,320,480)] autorelease];
+    self.view = [[UIView alloc] initWithFrame:CGRectMake(0,0,320,480)];
     self.view.backgroundColor = [UIColor blackColor];
     FileSystemObject *fso = [FileSystemObject sharedObject];
     NSString *path  = [[fso bundleDirectory] stringByAppendingPathComponent:@"idos-splash.gif"];
@@ -44,12 +44,10 @@
 - (void)animationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context
 {
     [gif removeFromSuperview];
-    [gif release];
     gif = nil;
     [self.view removeFromSuperview];
     self.view = nil;
     [player pause];
-    [player release];
     player = nil;
 }
 
@@ -122,12 +120,6 @@
 }
 
 
-- (void)dealloc {
-    [player release];
-    [gif release];
-    [labelVersion release];
-    [super dealloc];
-}
 
 
 @end
