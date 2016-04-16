@@ -625,7 +625,7 @@ static struct {
         }
         else
         {
-            maxWidth = 568;
+            maxWidth = [[UIScreen mainScreen] applicationFrame].size.width;
             maxHeight= 320;
             ptCenter = CGPointMake(maxWidth / 2, 160);
         }
