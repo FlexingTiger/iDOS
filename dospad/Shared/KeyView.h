@@ -45,5 +45,6 @@
 @property (nonatomic, strong) UIColor *textColor;
 @property (nonatomic, strong) UIColor *bkgColor,*edgeColor;
 @property (nonatomic,weak) id<KeyDelegate> delegate;
+@property (nonatomic, strong) NSString *mappedKey;
 
 @end

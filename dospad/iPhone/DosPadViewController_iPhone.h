@@ -29,13 +29,17 @@
 #import "SliderView.h"
 #import "DOSPadBaseViewController.h"
 #import "FloatPanel.h"
+#import "KeyMapper.h"
+#import "MfiGameControllerHandler.h"
+#import "MfiControllerInputHandler.h"
+
 
 @interface ToolPanelView : UIView {}
 @end
 
 
 @interface DosPadViewController_iPhone : DOSPadBaseViewController
-<FloatingViewDelegate>
+<FloatingViewDelegate,KeyDelegate,UIAlertViewDelegate>
 {
     GamePadMode mode;
     
@@ -53,6 +57,9 @@
     FloatPanel *fullscreenPanel;
     
     BOOL useOriginalScreenSize;
+    BOOL remapControlsModeOn;
+    UILabel *remappingOnLabel;
+    UIButton *resetMappingsButton;
 }
 
 - (void)refreshFullscreenPanel;

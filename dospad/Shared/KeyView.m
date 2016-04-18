@@ -180,7 +180,7 @@ static SystemSoundID keyPressSound=0;
         CGSize size = [title sizeWithFont:font];
         float offsetX = (contentRect.size.width - size.width)/2 + contentRect.origin.x;
         float offsetY = (contentRect.size.height - size.height)/2 + contentRect.origin.y;
-        [title drawInRect:CGRectMake(offsetX,offsetY,size.width,size.height) withFont:font];            
+        [title drawInRect:CGRectMake(offsetX,offsetY,size.width,size.height) withFont:font];
     } else if ([title length] == 2) {
         UIFont *font = [UIFont systemFontOfSize:isIPad?12:10];
         NSString * down = [title substringToIndex:1];
@@ -205,6 +205,14 @@ static SystemSoundID keyPressSound=0;
         float offsetX = (contentRect.size.width - size.width)/2 + contentRect.origin.x;
         float offsetY = (contentRect.size.height - size.height)/2 + contentRect.origin.y;
         [title drawInRect:CGRectMake(offsetX,offsetY,size.width,size.height) withFont:font];            
+    }
+    
+    if ( [self.mappedKey length] > 0 ) {
+        UIFont *font = [UIFont systemFontOfSize:isIPad?12:10];
+        CGSize size = [self.mappedKey sizeWithFont:font];
+        float offsetX = (contentRect.size.width - size.width) + contentRect.origin.x;
+        float offsetY = (contentRect.size.height - size.height) + contentRect.origin.y;
+        [self.mappedKey drawInRect:CGRectMake(offsetX, offsetY, size.width, size.height) withFont:font];
     }
     
     if (self.highlight) {

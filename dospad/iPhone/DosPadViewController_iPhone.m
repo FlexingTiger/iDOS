@@ -21,7 +21,7 @@
 #import "OptionViewController.h"
 #import "Common.h"
 #import "AppDelegate.h"
-
+#import "MfiGameControllerHandler.h"
 
 static struct {
     InputSourceType type;
@@ -60,6 +60,14 @@ static struct {
 @end
 
 
+@interface DosPadViewController_iPhone()
+
+@property(nonatomic, strong) KeyMapper *keyMapper;
+@property(nonatomic, strong) UIAlertView *keyMapperAlertView;
+@property(nonatomic, strong) MfiGameControllerHandler *mfiHandler;
+@property(nonatomic, strong) MfiControllerInputHandler *mfiInputHandler;
+
+@end
 
 @implementation DosPadViewController_iPhone
 
@@ -174,6 +182,30 @@ static struct {
     [btnExitFS setImage:[UIImage imageNamed:@"exitfull.png"] forState:UIControlStateNormal];
     [btnExitFS addTarget:self action:@selector(toggleScreenSize) forControlEvents:UIControlEventTouchUpInside];
     [fullscreenPanel.contentView addSubview:btnExitFS];
+
+    //---------------------------------------------------
+    // 10. Remap controls message
+    //---------------------------------------------------
+
+    remappingOnLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    remappingOnLabel.text = @"Remapping Controls ON";
+    remappingOnLabel.textColor = [UIColor redColor];
+    remappingOnLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:remappingOnLabel];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:remappingOnLabel attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterX multiplier:1.0f constant:0.0f]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:remappingOnLabel attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterY multiplier:1.0f constant:0.0f]];
+    remappingOnLabel.hidden = YES;
+    
+    resetMappingsButton = [[UIButton alloc] initWithFrame:CGRectZero];
+    [resetMappingsButton setTitle:@"Reset Mappings" forState:UIControlStateNormal];
+    [resetMappingsButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+    resetMappingsButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [resetMappingsButton addTarget:self action:@selector(resetMappingsButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:resetMappingsButton];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:resetMappingsButton attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterX multiplier:1.0f constant:0.0f]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:resetMappingsButton attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterY multiplier:0.5f constant:0.0f]];
+    resetMappingsButton.hidden = YES;
+    
 }
 
 - (void)toggleInputSource:(id)sender
@@ -232,6 +264,11 @@ static struct {
     [btnOption setImage:[UIImage imageNamed:@"options.png"] forState:UIControlStateNormal];
     [btnOption addTarget:self action:@selector(showOption) forControlEvents:UIControlEventTouchUpInside];
     [items addObject:btnOption];
+    
+    UIButton *btnRemap = [[UIButton alloc] initWithFrame:CGRectMake(340,0,20,24)];
+    [btnRemap setTitle:@"R" forState:UIControlStateNormal];
+    [btnRemap addTarget:self action:@selector(remapControlsButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [items addObject:btnRemap];
     
     [fullscreenPanel setItems:items];
 }
@@ -348,8 +385,10 @@ static struct {
     }
     kbd = [[KeyboardView alloc] initWithType:KeyboardTypeLandscape 
                                        frame:CGRectMake(0, 120, 480, 200)];
-    kbd.alpha = [self floatAlpha];    
-    [self.view addSubview:kbd];  
+    kbd.alpha = [self floatAlpha];
+    kbd.externKeyDelegate = remapControlsModeOn ? self : nil;
+    [self.view addSubview:kbd];
+    [self refreshKeyMappingsInViews];
     
     CGPoint ptOld = kbd.center;
     kbd.center = CGPointMake(ptOld.x, ptOld.y+kbd.frame.size.height);
@@ -472,6 +511,16 @@ static struct {
     [super viewDidLoad];
     mode = GamePadDefault;
     [self removeiOSKeyboard];
+    self.keyMapper = [[KeyMapper alloc] init];
+    [self.keyMapper loadFromDefaults];
+    self.mfiHandler = [[MfiGameControllerHandler alloc] init];
+    self.mfiInputHandler = [[MfiControllerInputHandler alloc] init];
+    self.mfiInputHandler.keyMapper = self.keyMapper;
+    [self.mfiHandler discoverController:^(GCController *gameController) {
+        [self.mfiInputHandler setupControllerInputsForController:gameController];
+    } disconnectedCallback:^{
+        
+    }];
 }
 
 -(void)didFloatingView:(FloatingView*)fltView
@@ -639,5 +688,79 @@ static struct {
     screenView.transform = t;
     screenView.center=ptCenter;
 }
+
+-(void) remapControlsButtonTapped:(id)sender {
+    remapControlsModeOn = !remapControlsModeOn;
+    remappingOnLabel.hidden = !remapControlsModeOn;
+    resetMappingsButton.hidden = !remapControlsModeOn;
+    
+    if ( remapControlsModeOn ) {
+        kbd.externKeyDelegate = self;
+    } else {
+        kbd.externKeyDelegate = nil;
+    }
+}
+
+-(void) refreshKeyMappingsInViews {
+    for (KeyView *keyView in kbd.keys) {
+        NSArray *mappedButtons = [self.keyMapper getControlsForMappedKey:keyView.code];
+        if ( mappedButtons.count > 0 ) {
+            NSMutableString *displayText = [NSMutableString string];
+            int index = 0;
+            for (NSNumber *button in mappedButtons) {
+                if ( index++ > 0 ) {
+                    [displayText appendString:@","];
+                }
+                [displayText appendString:[NSString stringWithFormat:@"%@",[KeyMapper controlToDisplayName:button.integerValue]]];
+            }
+            keyView.mappedKey = displayText;
+        } else {
+            keyView.mappedKey = @"";
+        }
+        [keyView setNeedsDisplay];
+    }
+}
+
+-(void) resetMappingsButtonTapped:(id)sender {
+    [self.keyMapper resetToDefaults];
+    [self refreshKeyMappingsInViews];
+    [self.keyMapper saveKeyMapping];
+}
+
+# pragma - mark KeyDelegate
+-(void)onKeyDown:(KeyView*)k {
+}
+
+-(void)onKeyUp:(KeyView*)k {
+    // show alert view
+    self.keyMapperAlertView = [[UIAlertView alloc] initWithTitle:@"Remap Key" message:[NSString stringWithFormat:@"Press a button to map the [%@] key",k.title] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Unbind",nil];
+    self.keyMapperAlertView.tag = k.code;
+    [self.keyMapperAlertView show];
+    [self.mfiInputHandler startRemappingControlsForMfiControllerForKey:k.code];
+    
+    __weak DosPadViewController_iPhone *weakSelf = self;
+    
+    self.mfiInputHandler.dismiss = ^{
+        [weakSelf.keyMapperAlertView dismissWithClickedButtonIndex:0 animated:YES];
+
+        [weakSelf.mfiInputHandler setupControllerInputsForController:[[GCController controllers] firstObject]];
+        [weakSelf.keyMapper saveKeyMapping];
+        [weakSelf refreshKeyMappingsInViews];
+    };
+    
+}
+
+#pragma mark - UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if ( buttonIndex == 1 ) {
+        SDL_scancode mappedKey = alertView.tag;
+        [self.keyMapper unmapKey:mappedKey];
+        [self.keyMapper saveKeyMapping];
+        [self refreshKeyMappingsInViews];
+        [self.mfiInputHandler setupControllerInputsForController:[[GCController controllers] firstObject]];
+    }
+}
+
+
 
 @end
