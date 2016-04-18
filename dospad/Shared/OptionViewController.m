@@ -190,7 +190,6 @@ enum {
     NSArray *recip = [NSArray arrayWithObject:@"support@fast-intelligence.com"];
     [controller setToRecipients:recip];
     [self presentModalViewController:controller animated:YES];
-    [controller release];
 }
 
 
@@ -257,7 +256,6 @@ enum {
     sw.on = on;
     [sw addTarget:self action:@selector(switchValueChanged:) forControlEvents:UIControlEventTouchUpInside];
     [cell.contentView addSubview:sw];
-    [sw release];
     return cell;
 }
 
@@ -276,7 +274,7 @@ enum {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
             cell.textLabel.text=@"Customize config";
             cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
-            return [cell autorelease];
+            return cell;
         }
         case OPT_OVERLAY_TRANSPARENCY:
         {
@@ -287,21 +285,21 @@ enum {
             cell = [self createBooleanOptionCell:@"DPad Movable" 
                                               on:DEFS_GET_INT(kDPadMovable)
                                              tag:OPT_DPAD_MOVABLE];
-            return [cell autorelease];
+            return cell;
         }
         case OPT_FORCE_ASPECT_RATIO:
         {
             cell = [self createBooleanOptionCell:@"Force 4:3 Aspect" 
                                               on:DEFS_GET_INT(kForceAspect)
                                              tag:OPT_FORCE_ASPECT_RATIO];
-            return [cell autorelease];
+            return cell;
         }
         case OPT_KEY_SOUND:
         {
             cell = [self createBooleanOptionCell:@"Disable Key Sound" 
                                               on:DEFS_GET_INT(kDisableKeySound)
                                              tag:OPT_KEY_SOUND];
-            return [cell autorelease];
+            return cell;
         }            
         case OPT_MOUSE_SPEED:
         {
@@ -312,7 +310,7 @@ enum {
             cell = [self createBooleanOptionCell:@"Disable GamePad Sound"
                                               on:DEFS_GET_INT(kDisableGamePadSound)
                                              tag:OPT_GAMEPAD_SOUND];
-            return [cell autorelease];
+            return cell;
         }
 #ifndef IDOS            
         case OPT_INPUT_PIANO:
@@ -328,14 +326,14 @@ enum {
             cell = [self createBooleanOptionCell:@"Number Pad"
                                               on:DEFS_GET_INT(InputSource_KeyName(InputSource_NumPad))
                                              tag:OPT_INPUT_NUMPAD];
-            return [cell autorelease];
+            return cell;
         }
         case OPT_INPUT_JOYSTICK:
         {
             cell = [self createBooleanOptionCell:@"Joystick"
                                               on:DEFS_GET_INT(InputSource_KeyName(InputSource_Joystick))
                                              tag:OPT_INPUT_JOYSTICK];
-            return [cell autorelease];
+            return cell;
         }
 #ifndef IDOS           
         case OPT_DONATE:
@@ -351,7 +349,7 @@ enum {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
             cell.textLabel.text=@"Credits and Thanks";
             cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
-            return [cell autorelease];
+            return cell;
         }
             
         case OPT_FORUM:
@@ -363,7 +361,7 @@ enum {
             cell.textLabel.text=@"iDOS Forum";            
 #endif
             cell.detailTextLabel.text=@"Ask for help in our community";
-            return [cell autorelease];
+            return cell;
         }
 #ifndef IDOS            
         case OPT_HOMEPAGE:
@@ -378,7 +376,7 @@ enum {
         {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
             cell.textLabel.text=@"Send Feedback/Bug Report";
-            return [cell autorelease];            
+            return cell;            
         }
 #endif        
     }
@@ -456,12 +454,11 @@ heightForRowAtIndexPath:(NSIndexPath*)indexPath
                                                                             bundle:nil];
             ctrl.filePath = configPath == nil ? get_dospad_config() : configPath;
             [self.navigationController pushViewController:ctrl animated:YES];
-            [ctrl release];
             break;
         }
         case OPT_CREDITS:
         {
-            WebViewController *webctrl=[[[WebViewController alloc] initWithNibName:@"WebViewController" bundle:nil] autorelease];
+            WebViewController *webctrl=[[WebViewController alloc] initWithNibName:@"WebViewController" bundle:nil];
             webctrl.url=[NSURL fileURLWithPath:[[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"credits.html"]];
             webctrl.title=@"Credits";
             [self.navigationController pushViewController:webctrl animated:YES];
@@ -517,15 +514,6 @@ heightForRowAtIndexPath:(NSIndexPath*)indexPath
 }
 
 
-- (void)dealloc {
-    self.cellMouseSpeed=nil;
-    self.sliderMouseSpeed=nil;
-    
-    self.cellTrans=nil;
-    self.slider=nil;
-    [configPath release];
-    [super dealloc];
-}
 
 
 @end

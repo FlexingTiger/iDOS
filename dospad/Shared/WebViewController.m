@@ -76,7 +76,6 @@ clickedButtonAtIndex:(NSInteger)buttonIndex
                                            cancelButtonTitle:TEXT("OK")
                                            otherButtonTitles:nil];
     [dialog show];
-    [dialog release];
 }
 
 /*
@@ -101,11 +100,6 @@ clickedButtonAtIndex:(NSInteger)buttonIndex
 }
 
 
-- (void)dealloc {
-    self.url=nil;
-    self.webview=nil;
-    [super dealloc];
-}
 
 
 @end

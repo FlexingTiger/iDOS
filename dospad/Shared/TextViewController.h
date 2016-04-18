@@ -24,7 +24,7 @@
     IBOutlet UITextView *textView;
     BOOL textChanged;
 }
-@property (nonatomic,retain) NSString *filePath;
-@property (nonatomic,retain) UITextView *textView;
+@property (nonatomic,strong) NSString *filePath;
+@property (nonatomic,strong) UITextView *textView;
 
 @end

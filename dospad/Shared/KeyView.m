@@ -38,9 +38,7 @@ static SystemSoundID keyPressSound=0;
 
 -(void)setTitle:(NSString *)t
 {
-    if (title != nil) [title release];
     title = t;
-    [title retain];
     [self setNeedsDisplay];
 }
 
@@ -163,8 +161,6 @@ static SystemSoundID keyPressSound=0;
     
     UIColor *origTextColor = self.textColor;
     UIColor *origBkgColor = self.bkgColor;
-    [origBkgColor retain];
-    [origTextColor retain];
     
     //[self drawBorder:rect];
     
@@ -215,24 +211,15 @@ static SystemSoundID keyPressSound=0;
         self.textColor=origTextColor;
         self.bkgColor=origBkgColor;
     }
-    [origBkgColor release];
-    [origTextColor release];
 }
 
-- (void)dealloc {
-    self.textColor = nil;
-    self.bkgColor = nil;
-    self.title = nil;
-    self.edgeColor=nil;
-    [super dealloc];
-}
 
 -(void)playKeyPressSound
 {
     if (DEFS_GET_INT(kDisableKeySound)) return;
     if (keyPressSound == 0) {
         NSString *path = [[NSBundle mainBundle] pathForResource:@"keypress" ofType:@"wav"];
-        AudioServicesCreateSystemSoundID((CFURLRef)[NSURL fileURLWithPath:path],&keyPressSound);
+        AudioServicesCreateSystemSoundID((__bridge CFURLRef)[NSURL fileURLWithPath:path],&keyPressSound);
     }
     if (keyPressSound != 0) AudioServicesPlaySystemSound(keyPressSound);
 }

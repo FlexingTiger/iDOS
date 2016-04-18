@@ -25,9 +25,7 @@ extern int SDL_SendKeyboardKey(int index, Uint8 state, SDL_scancode scancode);
 
 - (void)setTitle:(NSString *)s
 {
-    if (title) [title release];
     title = s;
-    [title retain];
     [self setNeedsDisplay];
 }
 
@@ -164,12 +162,6 @@ extern int SDL_SendKeyboardKey(int index, Uint8 state, SDL_scancode scancode);
 #endif
 }
 
-- (void)dealloc
-{
-    [title release];
-    [textColor release];
-    [super dealloc];
-}
 
 @end
 
@@ -361,10 +353,9 @@ extern int SDL_SendKeyboardKey(int index, Uint8 state, SDL_scancode scancode);
 
 - (void)dealloc {
     for (int i = 0; i < MAX_PIANO_KEYS; i++)
-        [keys[i] release];
+        ;
     for (int i = 0; i < MAX_PIANO_GRIDS; i++)
-        [grids[i] release];
-    [super dealloc];
+        ;
 }
 
 

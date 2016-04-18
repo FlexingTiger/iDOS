@@ -81,7 +81,7 @@ NSString *get_default_config()
 NSString *get_dospad_config()
 {
     NSString *cfg;
-    FileSystemObject *fso = [[FileSystemObject alloc] autorelease];
+    FileSystemObject *fso = [FileSystemObject alloc];
     NSString *cfgDir = [NSString stringWithUTF8String:diskd];
     NSString *filename= @"dospad.cfg";
     cfg = [cfgDir stringByAppendingPathComponent:filename];
@@ -230,7 +230,7 @@ int dospad_unzip(const char *file, const char *path)
     fixsep(srcFile);
     
     // Data Path is where we put the extracted files
-    FileSystemObject *fso = [[FileSystemObject alloc] autorelease];
+    FileSystemObject *fso = [FileSystemObject alloc];
     NSString *dataPath = [[NSString stringWithUTF8String:diskc]
                           stringByAppendingPathComponent:[NSString stringWithUTF8String:destPath]];
     dataPath = [dataPath stringByStandardizingPath];
@@ -267,7 +267,7 @@ int dospad_unzip(const char *file, const char *path)
         }
     }
     // Do unzip
-    ZipArchive *archive = [[ZipArchive alloc] autorelease];
+    ZipArchive *archive = [ZipArchive alloc];
     BOOL bRet = [archive UnzipOpenFile:zipFile];
     if (!bRet) {
         sprintf(dospad_error_msg, "Error unzip open file `%s'", [zipFile UTF8String]);
@@ -313,7 +313,7 @@ int dospad_get(const char *url, const char *path)
     if (data == nil || [data length]==0) return 0;
     
     // Store it to local file
-    FileSystemObject *fso = [[FileSystemObject alloc] autorelease];
+    FileSystemObject *fso = [FileSystemObject alloc];
     NSString *dataPath = [NSString stringWithUTF8String:diskc];
     dataPath = [dataPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%s",destPath]];
     dataPath = [dataPath stringByStandardizingPath];
@@ -327,78 +327,78 @@ int dospad_get(const char *url, const char *path)
 
 
 int main(int argc, char *argv[]) {
-    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+    @autoreleasepool {
     
     // Initialize Options
-    NSUserDefaults *defs=[NSUserDefaults standardUserDefaults];
-    int firstRun = [defs integerForKey:kFirstRun];
-    if (firstRun==0) {
-        [defs setFloat:kTransparencyDefault forKey:kTransparency];
-        [defs setInteger:1 forKey:kFirstRun];
-    }
-    
-    if ([defs floatForKey:kMouseSpeed]==0) {
-        [defs setFloat:0.5 forKey:kMouseSpeed];
-    }
-    
-    if (DEFS_GET_INT(kInputSource) < 1) {
-        DEFS_SET_INT(kInputSource, 1);
-        DEFS_SET_INT(InputSource_KeyName(InputSource_PCKeyboard), 1);
-        DEFS_SET_INT(InputSource_KeyName(InputSource_MouseButtons), 1);
-        DEFS_SET_INT(InputSource_KeyName(InputSource_NumPad), 1);
-        DEFS_SET_INT(InputSource_KeyName(InputSource_GamePad), 1);
-        DEFS_SET_INT(InputSource_KeyName(InputSource_Joystick), 1);
-        DEFS_SET_INT(InputSource_KeyName(InputSource_PianoKeyboard), 0);
-    }
+        NSUserDefaults *defs=[NSUserDefaults standardUserDefaults];
+        int firstRun = [defs integerForKey:kFirstRun];
+        if (firstRun==0) {
+            [defs setFloat:kTransparencyDefault forKey:kTransparency];
+            [defs setInteger:1 forKey:kFirstRun];
+        }
+        
+        if ([defs floatForKey:kMouseSpeed]==0) {
+            [defs setFloat:0.5 forKey:kMouseSpeed];
+        }
+        
+        if (DEFS_GET_INT(kInputSource) < 1) {
+            DEFS_SET_INT(kInputSource, 1);
+            DEFS_SET_INT(InputSource_KeyName(InputSource_PCKeyboard), 1);
+            DEFS_SET_INT(InputSource_KeyName(InputSource_MouseButtons), 1);
+            DEFS_SET_INT(InputSource_KeyName(InputSource_NumPad), 1);
+            DEFS_SET_INT(InputSource_KeyName(InputSource_GamePad), 1);
+            DEFS_SET_INT(InputSource_KeyName(InputSource_Joystick), 1);
+            DEFS_SET_INT(InputSource_KeyName(InputSource_PianoKeyboard), 0);
+        }
 
-    FileSystemObject *fso = [[FileSystemObject alloc] autorelease];
+        FileSystemObject *fso = [FileSystemObject alloc];
 
-    // Auto mount
+        // Auto mount
 #ifndef IDOS // DOSPAD for CYDIA
-    strcpy(diskc, "/var/mobile/Documents");
-    strcpy(diskd, [[fso documentsDirectory] UTF8String]);
+        strcpy(diskc, "/var/mobile/Documents");
+        strcpy(diskd, [[fso documentsDirectory] UTF8String]);
 #else
-    strcpy(diskc, [[fso documentsDirectory] UTF8String]);
-    strcpy(diskd, "/var/mobile/Documents");
+        strcpy(diskc, [[fso documentsDirectory] UTF8String]);
+        strcpy(diskd, "/var/mobile/Documents");
 #endif
-    
-    NSString *cPath=[NSString stringWithUTF8String:diskc];
-    NSString *dPath=[NSString stringWithUTF8String:diskd];
-    
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    
-    // Copy files to C disk (documents)
-    NSString *bundlePath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"diskc"];
-    NSArray *items = [fso contentsOfDirectory:bundlePath];
-    for (int i = 0; i < [items count]; i++) {
-        NSString *dataPath = [cPath stringByAppendingPathComponent:[items objectAtIndex:i]];
-        if (![fileManager fileExistsAtPath:dataPath]) {
-            NSString *p = [bundlePath stringByAppendingPathComponent:[items objectAtIndex:i]];
-            if (p) {
-                [fileManager copyItemAtPath:p toPath:dataPath error:NULL];
+        
+        NSString *cPath=[NSString stringWithUTF8String:diskc];
+        NSString *dPath=[NSString stringWithUTF8String:diskd];
+        
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        
+        // Copy files to C disk (documents)
+        NSString *bundlePath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"diskc"];
+        NSArray *items = [fso contentsOfDirectory:bundlePath];
+        for (int i = 0; i < [items count]; i++) {
+            NSString *dataPath = [cPath stringByAppendingPathComponent:[items objectAtIndex:i]];
+            if (![fileManager fileExistsAtPath:dataPath]) {
+                NSString *p = [bundlePath stringByAppendingPathComponent:[items objectAtIndex:i]];
+                if (p) {
+                    [fileManager copyItemAtPath:p toPath:dataPath error:NULL];
+                }
             }
         }
-    }
-    
-    // Initalize command history
-    dospad_init_history();
-    
-    get_dospad_config();
-     
-    /* On Non-JB device, /var/mobile/Documents doesn't exists */
-    if ([fso ensureDirectoryExists:cPath]) {
-        strcpy(automount_path, [cPath UTF8String]);
+        
+        // Initalize command history
+        dospad_init_history();
+        
+        get_dospad_config();
+         
+        /* On Non-JB device, /var/mobile/Documents doesn't exists */
+        if ([fso ensureDirectoryExists:cPath]) {
+            strcpy(automount_path, [cPath UTF8String]);
 #ifndef IDOS
-        strcat(automount_path, ";");
+            strcat(automount_path, ";");
 #endif
-    }
+        }
 	
 #ifndef IDOS    
-    if ([fso ensureDirectoryExists:dPath]) {
-        strcat(automount_path, [dPath UTF8String]);
-    }
+        if ([fso ensureDirectoryExists:dPath]) {
+            strcat(automount_path, [dPath UTF8String]);
+        }
 #endif    
-    int retVal = UIApplicationMain(argc, argv, @"DosPadUIApplication", nil);
-    [pool release];
-    return retVal;
+        int retVal = UIApplicationMain(argc, argv, @"DosPadUIApplication", nil);
+        return retVal;
+    }
 }

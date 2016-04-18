@@ -98,12 +98,6 @@
     return YES;
 }
 
-- (void)dealloc {
-    [splashController release];
-    [navController release];
-    [screenView release];
-    [super dealloc];
-}
 
 -(void)setWindowTitle:(char *)title
 {
@@ -135,7 +129,6 @@
         }
         
     }
-    [t release];
 }
 
 -(void)onLaunchExit

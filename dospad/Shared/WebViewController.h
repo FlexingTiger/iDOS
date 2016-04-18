@@ -24,7 +24,7 @@
     NSURL *url;
 }
 
-@property (nonatomic,retain)UIWebView* webview;
-@property (nonatomic,retain)NSURL*url;
+@property (nonatomic,strong)UIWebView* webview;
+@property (nonatomic,strong)NSURL*url;
 -(IBAction)done;
 @end

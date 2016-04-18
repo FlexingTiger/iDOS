@@ -27,11 +27,11 @@
     IBOutlet UISlider *sliderMouseSpeed;   
     NSString *configPath;
 }
-@property (nonatomic,retain) NSString *configPath;
-@property (nonatomic,retain) UITableViewCell *cellMouseSpeed;
-@property (nonatomic,retain) UISlider *sliderMouseSpeed;
-@property (nonatomic,retain) UITableViewCell*cellTrans;
-@property (nonatomic,retain) UISlider *slider;
+@property (nonatomic,strong) NSString *configPath;
+@property (nonatomic,strong) UITableViewCell *cellMouseSpeed;
+@property (nonatomic,strong) UISlider *sliderMouseSpeed;
+@property (nonatomic,strong) UITableViewCell*cellTrans;
+@property (nonatomic,strong) UISlider *slider;
 
 -(IBAction)sliderValueChanged:(UISlider *)slider;
 -(IBAction)switchValueChanged:(UISwitch*)sw;

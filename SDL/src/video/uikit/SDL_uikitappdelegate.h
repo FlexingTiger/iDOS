@@ -30,7 +30,7 @@
 }
 
 @property (readwrite, assign) SDL_Window *window;
-@property (readwrite, retain) UIWindow *uiwindow;
+@property (readwrite, strong) UIWindow *uiwindow;
 
 +(SDLUIKitDelegate *)sharedAppDelegate;
 -(SDL_uikitopenglview*)screen;
