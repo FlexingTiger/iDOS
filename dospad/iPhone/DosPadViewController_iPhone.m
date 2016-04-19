@@ -199,11 +199,14 @@ static struct {
     resetMappingsButton = [[UIButton alloc] initWithFrame:CGRectZero];
     [resetMappingsButton setTitle:@"Reset Mappings" forState:UIControlStateNormal];
     [resetMappingsButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+    [resetMappingsButton setTintColor:[UIColor redColor]];
     resetMappingsButton.translatesAutoresizingMaskIntoConstraints = NO;
     [resetMappingsButton addTarget:self action:@selector(resetMappingsButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:resetMappingsButton];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:resetMappingsButton attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterX multiplier:1.0f constant:0.0f]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:resetMappingsButton attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterY multiplier:0.5f constant:0.0f]];
+    resetMappingsButton.layer.borderWidth = 1.0f;
+    resetMappingsButton.layer.borderColor = [[UIColor redColor] CGColor];
     resetMappingsButton.hidden = YES;
     
 }

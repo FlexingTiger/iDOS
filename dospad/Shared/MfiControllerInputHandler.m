@@ -286,6 +286,26 @@ extern int SDL_PrivateJoystickAxis(SDL_Joystick * joystick, Uint8 axis, Sint16 v
         };
     }
     
+    void (^dpadHandler)(GCControllerDirectionPad *, float, float) = ^(GCControllerDirectionPad *dpad, float xvalue, float yvalue) {
+        if ( [self ensureJoystick] ) {
+            int maxValue = 32767;
+            int x = xvalue * maxValue;
+            int y = yvalue * maxValue;
+            if ( x > 0 ) {
+                x = maxValue;
+            } else if ( x < 0 ) {
+                x = -maxValue;
+            }
+            if ( y > 0 ) {
+                y = -maxValue;
+            } else if ( y < 0 ) {
+                y = maxValue;
+            }
+            SDL_PrivateJoystickAxis(joystick, 0, x);
+            SDL_PrivateJoystickAxis(joystick, 1, y);
+        }
+    };
+    
     NSInteger mappedKeyDpadUp = [self.keyMapper getMappedKeyForControl:MFI_DPAD_UP];
     NSInteger mappedKeyDpadDown = [self.keyMapper getMappedKeyForControl:MFI_DPAD_DOWN];
     NSInteger mappedKeyDpadLeft = [self.keyMapper getMappedKeyForControl:MFI_DPAD_LEFT];
@@ -316,9 +336,12 @@ extern int SDL_PrivateJoystickAxis(SDL_Joystick * joystick, Uint8 axis, Sint16 v
                 SDL_SendKeyboardKey( 0, SDL_RELEASED, (int)mappedKeyDpadLeft);
             }
             
-            // pass the joystick input through
-            // TODO?
+            // pass joystick input through
+            dpadHandler(dpad, xvalue, yvalue);
+            
         };
+    } else {
+        dpad.valueChangedHandler = dpadHandler;
     }
 }
 
