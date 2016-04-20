@@ -1,9 +1,23 @@
-## iDOS
-This is an unoffical checkout of the dospad SVN repository which does not build correctly anymore (at least the iDOS-target does not). Fixed to work under iOS 6.1 using Xcode 4.6.3.
+## iDOS 
 
-For the original code have a look at:
+A custom fork of an older version of iDOS, a DOSBox emulator for iOS.
 
-[https://code.google.com/p/dospad/](https://code.google.com/p/dospad/)
+This compiles under Xcode 7 and runs under iOS 9. It was also converted to use ARC for the frontend.
+
+### Added features include:
+
+- mfi Controller Support, with support for remapping keyboard controls
+
+### Features that probably aren't working:
+
+- Hardware keyboard support (requires calling private headers and was disabled)
+
+The original repo is located at:
+
+https://github.com/litchie/dospad
+
+(I tried to add my enhancements to the above repo but there's a crash issue I can't resolve)
+
 
 ### License
 GNU GPL v2
